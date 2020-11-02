@@ -64,6 +64,13 @@ func main() {
 	_ = r.Run()
 }
 
+// @Summary Show a single todo
+// @Description get the single todo by ID
+// @Produce json
+// @Param id path string true "TODO ID"
+// @Success 200 {object} Todo
+// @Failure 404
+// @Router /todos/{id} [get]
 func todoHandler(c *gin.Context) {
 	id := c.Param("id")
 	var todo *Todo

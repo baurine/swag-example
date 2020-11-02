@@ -1,4 +1,16 @@
 basePath: /api/v1
+definitions:
+  main.Todo:
+    properties:
+      content:
+        type: string
+      created_at:
+        type: integer
+      done:
+        type: boolean
+      id:
+        type: string
+    type: object
 info:
   contact: {}
   description: This is a sample todo-list server.
@@ -7,5 +19,23 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   title: Todo-List API
   version: "1.0"
-paths: {}
+paths:
+  /todos/{id}:
+    get:
+      description: get the single todo by ID
+      parameters:
+      - description: TODO ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Todo'
+        "404": {}
+      summary: Show a single todo
 swagger: "2.0"
