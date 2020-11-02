@@ -1,3 +1,10 @@
+// @title Todo-List API
+// @version 1.0
+// @description This is a sample todo-list server.
+// @license.name Apache 2.0
+// @license.url http://www.apache.org/licenses/LICENSE-2.0.html
+// @BasePath /api/v1
+
 package main
 
 import (
@@ -56,12 +63,6 @@ func main() {
 
 	_ = r.Run()
 }
-
-// func handler(c *gin.Context) {
-// 	c.JSON(http.StatusOK, gin.H{
-// 		"message": "ok",
-// 	})
-// }
 
 func todoHandler(c *gin.Context) {
 	id := c.Param("id")
