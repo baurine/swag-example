@@ -88,6 +88,11 @@ func todoHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, todo)
 }
 
+// @Summary Show all todos
+// @Description get the list of todos
+// @Produce json
+// @Success 200 {array} Todo
+// @Router /todos [get]
 func listHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, todos)
 }
@@ -96,6 +101,11 @@ type AddTodoReq struct {
 	Content string `json:"content"`
 }
 
+// @Summary Add a new todo
+// @Produce json
+// @Param request body AddTodoReq true "Todo Content"
+// @Success 200 {object} Todo
+// @Router /todos [post]
 func addHandler(c *gin.Context) {
 	var req AddTodoReq
 	if err := c.ShouldBindJSON(&req); err != nil {
@@ -113,6 +123,12 @@ func addHandler(c *gin.Context) {
 	c.JSON(http.StatusOK, todo)
 }
 
+// @Summary Delete a todo
+// @Description delete a single todo by ID
+// @Param id path string true "Todo ID"
+// @Success 204
+// @Failure 404
+// @Router /todos/{id} [delete]
 func deleteHandler(c *gin.Context) {
 	id := c.Param("id")
 	var todo *Todo
@@ -139,6 +155,12 @@ type UpdateTodoReq struct {
 	Done    bool   `json:"done"`
 }
 
+// @Summary Update a todo
+// @Description update a single todo by ID
+// @Param request body UpdateTodoReq true "Todo Body"
+// @Success 204
+// @Failure 404
+// @Router /todos/{id} [put]
 func updateHandler(c *gin.Context) {
 	var req UpdateTodoReq
 	if err := c.ShouldBindJSON(&req); err != nil {

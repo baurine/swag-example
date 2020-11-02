@@ -28,6 +28,51 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/todos": {
+            "get": {
+                "description": "get the list of todos",
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Show all todos",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/main.Todo"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "produces": [
+                    "application/json"
+                ],
+                "summary": "Add a new todo",
+                "parameters": [
+                    {
+                        "description": "Todo Content",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.AddTodoReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/main.Todo"
+                        }
+                    }
+                }
+            }
+        },
         "/todos/{id}": {
             "get": {
                 "description": "get the single todo by ID",
@@ -53,10 +98,54 @@ var doc = `{
                     },
                     "404": {}
                 }
+            },
+            "put": {
+                "description": "update a single todo by ID",
+                "summary": "Update a todo",
+                "parameters": [
+                    {
+                        "description": "Todo Body",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/main.UpdateTodoReq"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {},
+                    "404": {}
+                }
+            },
+            "delete": {
+                "description": "delete a single todo by ID",
+                "summary": "Delete a todo",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Todo ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "204": {},
+                    "404": {}
+                }
             }
         }
     },
     "definitions": {
+        "main.AddTodoReq": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                }
+            }
+        },
         "main.Todo": {
             "type": "object",
             "properties": {
@@ -71,6 +160,17 @@ var doc = `{
                 },
                 "id": {
                     "type": "string"
+                }
+            }
+        },
+        "main.UpdateTodoReq": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "done": {
+                    "type": "boolean"
                 }
             }
         }

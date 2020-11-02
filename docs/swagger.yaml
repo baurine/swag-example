@@ -1,5 +1,10 @@
 basePath: /api/v1
 definitions:
+  main.AddTodoReq:
+    properties:
+      content:
+        type: string
+    type: object
   main.Todo:
     properties:
       content:
@@ -11,6 +16,13 @@ definitions:
       id:
         type: string
     type: object
+  main.UpdateTodoReq:
+    properties:
+      content:
+        type: string
+      done:
+        type: boolean
+    type: object
 info:
   contact: {}
   description: This is a sample todo-list server.
@@ -20,7 +32,48 @@ info:
   title: Todo-List API
   version: "1.0"
 paths:
+  /todos:
+    get:
+      description: get the list of todos
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/main.Todo'
+            type: array
+      summary: Show all todos
+    post:
+      parameters:
+      - description: Todo Content
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/main.AddTodoReq'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/main.Todo'
+      summary: Add a new todo
   /todos/{id}:
+    delete:
+      description: delete a single todo by ID
+      parameters:
+      - description: Todo ID
+        in: path
+        name: id
+        required: true
+        type: string
+      responses:
+        "204": {}
+        "404": {}
+      summary: Delete a todo
     get:
       description: get the single todo by ID
       parameters:
@@ -38,4 +91,17 @@ paths:
             $ref: '#/definitions/main.Todo'
         "404": {}
       summary: Show a single todo
+    put:
+      description: update a single todo by ID
+      parameters:
+      - description: Todo Body
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/main.UpdateTodoReq'
+      responses:
+        "204": {}
+        "404": {}
+      summary: Update a todo
 swagger: "2.0"
