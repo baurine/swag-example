@@ -80,7 +80,9 @@
                             "$ref": "#/definitions/main.Todo"
                         }
                     },
-                    "404": {}
+                    "404": {
+                        "description": "no content"
+                    }
                 }
             },
             "put": {
@@ -105,8 +107,12 @@
                     }
                 ],
                 "responses": {
-                    "204": {},
-                    "404": {}
+                    "204": {
+                        "description": "no content"
+                    },
+                    "404": {
+                        "description": "no content"
+                    }
                 }
             },
             "delete": {
@@ -122,8 +128,12 @@
                     }
                 ],
                 "responses": {
-                    "204": {},
-                    "404": {}
+                    "204": {
+                        "description": "no content"
+                    },
+                    "404": {
+                        "description": "no content"
+                    }
                 }
             }
         }

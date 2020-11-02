@@ -96,7 +96,9 @@ var doc = `{
                             "$ref": "#/definitions/main.Todo"
                         }
                     },
-                    "404": {}
+                    "404": {
+                        "description": "no content"
+                    }
                 }
             },
             "put": {
@@ -121,8 +123,12 @@ var doc = `{
                     }
                 ],
                 "responses": {
-                    "204": {},
-                    "404": {}
+                    "204": {
+                        "description": "no content"
+                    },
+                    "404": {
+                        "description": "no content"
+                    }
                 }
             },
             "delete": {
@@ -138,8 +144,12 @@ var doc = `{
                     }
                 ],
                 "responses": {
-                    "204": {},
-                    "404": {}
+                    "204": {
+                        "description": "no content"
+                    },
+                    "404": {
+                        "description": "no content"
+                    }
                 }
             }
         }

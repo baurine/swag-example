@@ -78,7 +78,7 @@ func main() {
 // @Produce json
 // @Param id path string true "TODO ID"
 // @Success 200 {object} Todo
-// @Failure 404
+// @Failure 404 "no content"
 // @Router /todos/{id} [get]
 func todoHandler(c *gin.Context) {
 	id := c.Param("id")
@@ -135,8 +135,8 @@ func addHandler(c *gin.Context) {
 // @Summary Delete a todo
 // @Description delete a single todo by ID
 // @Param id path string true "Todo ID"
-// @Success 204
-// @Failure 404
+// @Success 204 "no content"
+// @Failure 404 "no content"
 // @Router /todos/{id} [delete]
 func deleteHandler(c *gin.Context) {
 	id := c.Param("id")
@@ -168,8 +168,8 @@ type UpdateTodoReq struct {
 // @Description update a single todo by ID
 // @Param id path string true "Todo ID"
 // @Param request body UpdateTodoReq true "Todo Body"
-// @Success 204
-// @Failure 404
+// @Success 204 "no content"
+// @Failure 404 "no content"
 // @Router /todos/{id} [put]
 func updateHandler(c *gin.Context) {
 	var req UpdateTodoReq

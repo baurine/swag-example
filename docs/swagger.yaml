@@ -71,8 +71,10 @@ paths:
         required: true
         type: string
       responses:
-        "204": {}
-        "404": {}
+        "204":
+          description: no content
+        "404":
+          description: no content
       summary: Delete a todo
     get:
       description: get the single todo by ID
@@ -89,7 +91,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/main.Todo'
-        "404": {}
+        "404":
+          description: no content
       summary: Show a single todo
     put:
       description: update a single todo by ID
@@ -106,7 +109,9 @@ paths:
         schema:
           $ref: '#/definitions/main.UpdateTodoReq'
       responses:
-        "204": {}
-        "404": {}
+        "204":
+          description: no content
+        "404":
+          description: no content
       summary: Update a todo
 swagger: "2.0"
