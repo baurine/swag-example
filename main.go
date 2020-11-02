@@ -14,6 +14,12 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/google/uuid"
 	cors "github.com/rs/cors/wrapper/gin"
+
+	// for generate swagger ui
+	_ "swag-example/docs"
+
+	swaggerFiles "github.com/swaggo/files"     // swagger embed files
+	ginSwagger "github.com/swaggo/gin-swagger" // gin-swagger middleware
 )
 
 type Todo struct {
@@ -60,6 +66,9 @@ func main() {
 			todos.PUT(":id", updateHandler)
 		}
 	}
+	// must access /swagger/index.html
+	// others will get 404
+	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	_ = r.Run()
 }
