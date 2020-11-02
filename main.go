@@ -166,6 +166,7 @@ type UpdateTodoReq struct {
 
 // @Summary Update a todo
 // @Description update a single todo by ID
+// @Param id path string true "Todo ID"
 // @Param request body UpdateTodoReq true "Todo Body"
 // @Success 204
 // @Failure 404

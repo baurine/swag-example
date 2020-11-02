@@ -94,6 +94,11 @@ paths:
     put:
       description: update a single todo by ID
       parameters:
+      - description: Todo ID
+        in: path
+        name: id
+        required: true
+        type: string
       - description: Todo Body
         in: body
         name: request

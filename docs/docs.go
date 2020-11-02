@@ -104,6 +104,13 @@ var doc = `{
                 "summary": "Update a todo",
                 "parameters": [
                     {
+                        "type": "string",
+                        "description": "Todo ID",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
                         "description": "Todo Body",
                         "name": "request",
                         "in": "body",
