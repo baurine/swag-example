@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react'
+
 import apiClient, { MainTodo } from './apiClient'
-import './App.css'
-import TodoItem from './TodoItem'
+import AddTodo from './components/AddTodo'
+import TodoItem from './components/TodoItem'
 
 function convertArrToMap(todos: MainTodo[]): Record<string, MainTodo> {
   return todos.reduce((accu, cur) => {
@@ -23,27 +24,7 @@ function App() {
     getTodos()
   }, [])
 
-  async function handleSubmit(e: any) {
-    e.preventDefault()
-
-    const data = new FormData(e.target)
-    const content = data.get('content') as string
-    if (content.trim() === '') {
-      return
-    }
-    try {
-      const res = await apiClient.getInstance().todosPost({
-        content,
-      })
-      const todo = res.data
-      setTodosMap({
-        ...todosMap,
-        [todo.id!]: todo,
-      })
-    } catch (err) {}
-  }
-
-  function handleUpdateTodo(todo: MainTodo) {
+  function handleAddOrUpdateTodo(todo: MainTodo) {
     setTodosMap({
       ...todosMap,
       [todo.id!]: todo,
@@ -57,20 +38,22 @@ function App() {
   }
 
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        <input type="text" name="content" />
-        <input type="submit" value="submit" />
-      </form>
-      {Object.values(todosMap).map((todo) => (
-        <TodoItem
-          key={todo.id}
-          todo={todo}
-          onUpdate={handleUpdateTodo}
-          onDelete={handleDeleteTodo}
-        />
-      ))}
-    </div>
+    <section className="section">
+      <div className="container" style={{ maxWidth: 300 }}>
+        <AddTodo onAdd={handleAddOrUpdateTodo} />
+
+        <div style={{ marginTop: 16 }}>
+          {Object.values(todosMap).map((todo) => (
+            <TodoItem
+              key={todo.id}
+              todo={todo}
+              onUpdate={handleAddOrUpdateTodo}
+              onDelete={handleDeleteTodo}
+            />
+          ))}
+        </div>
+      </div>
+    </section>
   )
 }
 

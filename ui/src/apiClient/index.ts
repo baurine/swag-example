@@ -29,11 +29,9 @@ export default { getInstance, getBasePath }
 function initAxios() {
   const instance = axios.create()
   instance.interceptors.response.use(undefined, function (err) {
-    const { response } = err
-
-    const errMsg = response?.data?.message || err.message
+    const { response, message } = err
+    const errMsg = response?.data?.message || message
     window.alert('occur error: ' + errMsg)
-
     return Promise.reject(err)
   })
 
@@ -41,13 +39,9 @@ function initAxios() {
 }
 
 function init() {
-  let apiUrl: string
-  if (process.env.REACT_APP_API_URL) {
-    apiUrl = `${process.env.REACT_APP_API_URL}/api/v1`
-  } else {
-    apiUrl = 'http://127.0.0.1:8080/api/v1'
-  }
-
+  let apiUrl = `${
+    process.env.REACT_APP_API_URL || 'http://127.0.0.1:8080'
+  }/api/v1`
   const dashboardClient = new DefaultApi(undefined, apiUrl, initAxios())
   save(apiUrl, dashboardClient)
 }

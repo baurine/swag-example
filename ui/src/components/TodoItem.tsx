@@ -1,5 +1,6 @@
 import React from 'react'
-import apiClient, { MainTodo } from './apiClient'
+
+import apiClient, { MainTodo } from '../apiClient'
 
 interface ITodoItemProps {
   todo: MainTodo
@@ -15,7 +16,7 @@ export default function TodoItem({ todo, onUpdate, onDelete }: ITodoItemProps) {
         content: todo.content,
         done: checked,
       })
-      onUpdate({ ...todo })
+      onUpdate({ ...todo, done: checked })
     } catch (err) {}
   }
 
@@ -27,16 +28,26 @@ export default function TodoItem({ todo, onUpdate, onDelete }: ITodoItemProps) {
   }
 
   return (
-    <div>
-      <label>
-        <input
-          type="checkbox"
-          onChange={handleCheck}
-          defaultChecked={todo.done}
-        ></input>
-        <span>{todo.content}</span>
+    <div
+      style={{
+        padding: 8,
+        marginBottom: 8,
+        border: '1px solid #ccc',
+        borderRadius: 4,
+        display: 'flex',
+        alignItems: 'center',
+      }}
+    >
+      <label className="checkbox" style={{ flex: 1 }}>
+        <input type="checkbox" onChange={handleCheck} checked={todo.done} />
+        &nbsp;&nbsp;
+        <span style={{ textDecoration: todo.done ? 'line-through' : 'none' }}>
+          {todo.content}
+        </span>
       </label>
-      <button onClick={handleDelete}>remove</button>
+      <button className="button is-small" onClick={handleDelete}>
+        remove
+      </button>
     </div>
   )
 }
