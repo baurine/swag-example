@@ -22,7 +22,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "gen:api": "openapi-generator-cli generate -i ../docs/swagger.yaml -g typescript-axios -c .openapi_config.yaml -o src/apiClient"
+    "gen:api": "openapi-generator-cli generate -i ../docs/swagger.yaml -g typescript-axios -c .openapi_config.yaml -o src/apiClient/api"
   },
   "eslintConfig": {
     "extends": [
