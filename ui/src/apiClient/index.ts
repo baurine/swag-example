@@ -22,6 +22,7 @@ function getBasePath(): string {
   return basePath
 }
 
+// eslint-disable-next-line
 export default { getInstance, getBasePath }
 
 //////////////////////////////
