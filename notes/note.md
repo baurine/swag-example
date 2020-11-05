@@ -128,7 +128,7 @@ run:
 	bin/web
 ```
 
-然后执行 `make && make run`，项目就愉快地跑起来了，从 log 输出来看，目前我们实现了如下 5 个 API：
+然后执行 `make && make run`，项目就愉快地跑起来了：
 
 ```
 [GIN-debug] GET    /api/v1/todos/:id         --> main.todoHandler (5 handlers)
@@ -138,7 +138,7 @@ run:
 [GIN-debug] PUT    /api/v1/todos/:id         --> main.updateHandler (5 handlers)
 ```
 
-我们可以使用 curl 或 postman 来测试这些 API。
+目前，我们可以使用 curl 或 postman 来测试这些 API，第三步集成 swagger ui 后就可以用 swagger ui 来测试这些 API 了。
 
 ## 2. 使用 swaggo/swag，将后端 API 导出成 json/yaml 描述文件
 
@@ -183,7 +183,7 @@ run:
    }
    ```
 
-   > 注意，如果你的输出只有 status code，没有 body，比如 204，那么，你不能只写成 `@Success 204` 或者 `@Success 204 ""`，可以随便填充点字符串，比如 `"no content"`
+   > 注意：如果你的输出只有 status code，没有 body，比如 204，那么，你不能只写成 `@Success 204` 或者 `@Success 204 ""`，可以随便填充点字符串，比如 `"no content"`
 
 1. 执行 `swag init`。
 
@@ -231,6 +231,8 @@ run:
 
 ## 3. 使用 swaggo/swag，生成后端 API 的 swagger ui，作为 API 的 docs 及 playgroud
 
+> 注意：这一步是可选的。如果你不需一个带 ui 页面的 API docs，或者更偏好用 postman 测试 API，那么这一步可以跳过。
+
 接下来我们可以为此项目集成 swagger ui，方便调试 API 接口并作为 API 的文档页面。
 
 注意到上一步生成的 docs/docs.go 文件了吗？它包括了 API 的所有信息，它有一个 init() 函数，在 init() 里进行 swagger 的注册。所以我们要在 main.go 中 import 这个 package。
@@ -252,14 +254,14 @@ import (
 func main() {
   // ...
 	// must access /swagger/index.html
-	// others will get 404
+	// access /swagger will get 404
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	r.Run()
+	_ = r.Run()
 }
 ```
 
-重启程序，然后在浏览访问 http://127.0.0.1:8080/swagger/index.html 就可以看到 swagger ui 的页面了，在此页面可以方便地测试接口。(注意，只访问 http://127.0.0.1:8080/swagger 是不行，必须带上后面的 /index.html，后面可以考虑优化)
+重启程序，然后在浏览访问 http://127.0.0.1:8080/swagger/index.html 就可以看到 swagger ui 的页面了，在此页面可以方便地测试接口。(访问 http://127.0.0.1:8080/swagger 会得到 404，必须带上后面的 /index.html，后面可以考虑优化)
 
 ![](./swag_ui.png)
 
@@ -507,6 +509,8 @@ api:
 最后想说一下，这种方案也不是百分百完美，最大的缺点就是生成出来的前端代码体积膨胀，此例中，仅仅五个 API，api.ts 的文件行数就已经达到了将近 500 行，当然，包括很多注释，体积也达到了 19KB，而自己实现的话，怎么着 50 行也够了，体积不会超过 2~3KB。
 
 (一个例子，tidb-dashboard 的后端 API 几十个，api.ts 的行数是 7100 行，体积 267KB。)
+
+另外，说实话，生成的 API 的方法名字也挺丑的，不过习惯就好...
 
 That's all.
 

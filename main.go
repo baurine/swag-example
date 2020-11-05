@@ -67,7 +67,7 @@ func main() {
 		}
 	}
 	// must access /swagger/index.html
-	// others will get 404
+	// access /swagger will get 404
 	r.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	_ = r.Run()
