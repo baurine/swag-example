@@ -6,7 +6,7 @@ server:
 	go build -o bin/web main.go
 
 api:
-	swag init
+	swag init --exclude ui
 	cd ui && yarn gen:api
 
 run:
