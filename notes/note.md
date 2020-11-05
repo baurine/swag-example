@@ -514,6 +514,60 @@ api:
 
 That's all.
 
-## To Refine
+## 优化
 
-- [ ] watch 后端代码文件，当文件修改时，自动执行 `make api` 重新生成前端代码
+### watch files change
+
+watch 后端代码文件，当文件修改时，自动重新生成前端代码。
+
+应该有很多种实现方法，但是这里我们使用 gulp 来实现，因为它自带 watch 功能，而且可以并行执行多个前台任务，省去我们为了 watch 文件变化而需要新开一个 terminal tab。
+
+首先安装相应的 npm 包：
+
+```shell
+$ cd ui
+$ yarn add gulp gulp-cli gulp-shell -D
+```
+
+gulp 是提供 api 的库；gulp-cli 是 cmd，允许你在命令行执行 `gulp` 命令；gulp-shell 是 gulp 的一个插件，用来执行 shell 语句。
+
+接下来在 ui 根目录创建 gulpfile.js，内容如下：
+
+```js
+const { task, watch, series, parallel } = require('gulp')
+const shell = require('gulp-shell')
+
+task('webpack:start', shell.task('yarn react-scripts start'))
+
+task('swagger:gen', shell.task('cd .. && make api'))
+
+task('swagger:watch', () => watch(['../main.go'], series('swagger:gen')))
+
+task('dev', series('swagger:gen', parallel('swagger:watch', 'webpack:start')))
+```
+
+然后在 package.json 替换 `start` 命令：
+
+```diff
+  "scripts": {
+-   "start": "react-scripts start",
++   "start": "gulp dev",
+```
+
+这样，当我们执行 `yarn start` 的时候，会先执行 gulp-cli，gulp-cli 加载 gulpfile.js，找到 dev task，执行该 task 相应的动作，即 `task('dev', series('swagger:gen', parallel('swagger:watch', 'webpack:start')))`。
+
+这个 task 会串行地先执行 `swagger:gen` task，再执行 `parallel('swagger:watch', 'webpack:start')`。
+
+`swagger:gen` task 会执行 `make api` 来生成前端代码。
+
+`parallel('swagger:watch', 'webpack:start')` 是一个并行任务，这意味着 `swagger:watch` 和 `webpack:start` 会同时执行。
+
+而 `swagger:watch` 任务正是核心所在，`task('swagger:watch', () => watch(['../*.go'], series('swagger:gen')))`，它会使用 watch() 方法去监听 main.go 的变化，如果有变化，则执行 `swagger:gen` task，即重新生成前端代码。
+
+> 注意：监听时不能把 docs 目录里的 go 文件包括进去了，否则会引会无限循环，对吧。
+
+`wepback:start` 命令就是原先的 `yarn start`，调用 webpack 对项目进行编译运行。
+
+最终效果：
+
+![](./swag_watch.gif)
